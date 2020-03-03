@@ -21,8 +21,11 @@ def create_database(db_file):
             conn.close()
 
 create_database("countdown.db")
-db = sqlite3.connect("countdown.db")
-cur = db.cursor()
+
+def get_db():
+    db = sqlite3.connect("countdown.db")
+    cur = db.cursor()
+    return db
 
 # to print results from database
 # cur.execute("SELECT * FROM events;")
@@ -38,11 +41,13 @@ def render_add_event():
 @app.route("/add-event", methods=["POST"])
 def add_event():
     # add new event that you want to count 
+    id = request.form.get("id")
     title = request.form.get("title")
     message = request.form.get("message")
     date = request.form.get("date")
     location = request.form.get("location")
     theme = request.form.get("theme")
-    cur.execute("INSERT INTO events (id, title, message, date, location, theme) VALUES (:id, :title, :message, :date, :location, :theme);", {"id":id, "title":title, "message":message, "date":date, "location":location, "theme":theme})
-    cur.commit()
+    db = get_db()
+    db.execute("INSERT INTO events (id, title, message, date, location, theme) VALUES (:id, :title, :message, :date, :location, :theme);", {"id":id, "title":title, "message":message, "date":date, "location":location, "theme":theme})
+    db.commit()
     return redirect("/")
