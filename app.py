@@ -15,7 +15,7 @@ def create_database(db_file):
     try:
         conn = sqlite3.connect(db_file)
         db = conn.cursor()
-        db.execute("CREATE TABLE IF NOT EXISTS events (person_id INTEGER NOT NULL, event_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, title TEXT NOT NULL, message TEXT, year TEXT NOT NULL, month TEXT NOT NULL, day TEXT NOT NULL, location TEXT, theme TEXT NOT NULL);")
+        db.execute("CREATE TABLE IF NOT EXISTS events (person_id INTEGER NOT NULL, event_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, title TEXT NOT NULL, message TEXT, date TEXT NOT NULL, location TEXT, theme TEXT NOT NULL);")
 
         # print(sqlite3.version)
     except Error as e:
@@ -55,15 +55,15 @@ def render_add_event():
 @app.route("/add-event", methods=["POST"])
 def add_event():
     # add new event that you want to count
-    id = request.form.get("id")
+    person_id = request.form.get("id")
     title = request.form.get("title")
     message = request.form.get("message")
     event_date = request.form.get("date")
     location = request.form.get("location")
     theme = request.form.get("theme")
     db = get_db()
-    db.execute("INSERT INTO events (id, title, message, date, location, theme) VALUES (:id, :title, :message, :date, :location, :theme);", {
-               "id": id, "title": title, "message": message, "date": event_date, "location": location, "theme": theme})
+    db.execute("INSERT INTO events (person_id, title, message, date, location, theme) VALUES (:person_id, :title, :message, :date, :location, :theme);", {
+               "person_id": person_id, "title": title, "message": message, "date": event_date, "location": location, "theme": theme})
     db.commit()
     return redirect("/")
 
