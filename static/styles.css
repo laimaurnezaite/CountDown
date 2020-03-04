@@ -12,65 +12,61 @@ h4
     padding-bottom: 20px;
 }
 
-input[type=text], [type=integer], [type=date]
+input[type=text], [type=integer], [type=date], [list="themes"]
 {
     border: none;
     border: 1px solid #212529;
-    margin-bottom: 10px;
+    margin: 5px;
+    /* width: 300%; */
+    /* padding: 1%; */
 }
 
-
-.flex-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-  
-.flex-container > div {
-    color: #212529;
-    margin: 10px;
-    font-size: 30px;
-    align-items: center;
-}
-
-.block 
+#menu
 {
-    display: block;
-    width: 100%;
-    border: solid;
-    border-color: #212529;
-    border-width: 1px;
-    color: #212529;
-    padding: 14px 28px;
-    margin: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
+    background-color: white;
+    border-color:#212529;
+    margin:0.5%;
+    width: 10%;
 }
-  
-button:hover 
+#menu:hover 
 {
     background-color: #212529;
     color: white;
-}
-.container2
+} 
+
+
+.d-flex justify-content-center
 {
-    width: 100%;
-    text-align: center;
-    padding-top: 15px;
-    /* margin-left: 45%;
-    margin-right: 45%; */
-    /* padding-right: 15px; */
-    /* padding-left: 15px; */
-    /* margin-left: 50%;  */
-    /* margin-left: auto; */
+    padding:30px;
+    border: solid;
+    border-color: #212529;
+    border-width: 1px;
 }
+
 button
 {
     background-color: white;
     border-color:#212529;
-    /* border-color: rgb(216, 216, 216) rgb(209, 209, 209) rgb(186, 186, 186);
+    margin:1%;
+    width: 96%;
 }
-
+button:hover 
+{
+    background-color: #212529;
+    color: white;
+} 
+::placeholder 
+{
+    color: #212529;
+    
+}
+select
+{
+    height: 100%;
+    margin:1%;
+    width: 96%;
+    color:#212529;
+}
+.select-selected {
+    background-color: BLACK;
+  }
