@@ -80,3 +80,7 @@ def home_page():
     cur.execute("SELECT * FROM events where date > :today;", {"today": today})
     rows = cur.fetchall()
     return render_template("home_page.html", rows=rows)
+
+@app.route("/layout")
+def layout_page():
+    return render_template("layout.html")
