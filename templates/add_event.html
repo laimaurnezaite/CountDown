@@ -2,26 +2,28 @@
 
 {% block main %}
 <form action="/add-event" method="POST" class="register">
-    <div>
-        <input type="integer" name="id" placeholder="ID">
+    <div class="d-flex justify-content-center">
+        <div class="d-flex flex-column bd-highlight mb-3">
+            <input class="p-2 bd-highlight" type="integer" name="id" placeholder="ID">
+            <input class="p-2 bd-highlight" type="text" name="title" placeholder="Title">
+            <input class="p-2 bd-highlight" type="text" name="message" placeholder="Message">
+            <input class="p-2 bd-highlight" type="date" name="date">
+            <input class="p-2 bd-highlight" type="text" name="location" placeholder="Location">
+            <select id="theme">
+                <option value="birthday">Birthday</option>
+                <option value="concert">Concert</option>
+                <option value="exam">Exam</option>
+                <option value="flight">Flight</option>
+                <option value="meeting">Meeting</option>
+                <option value="party">Party</option>
+                <option value="theatre">Theatre</option>
+                <option value="vacation">Vacation</option>
+                <option value="wedding">Wedding</option>
+            </select>
+            <button type="submit" class="text-center p-2 bd-highlight">Add avent</button>
+        </div>
     </div>
-    <div>
-        <input type="text" name="title" placeholder="Title">
-    </div>
-    <div>
-        <input type="text" name="message" placeholder="Message">
-    </div>
-    <label for="id">Enter date of event:</label>
-    <div>
-        <input type="date" name="date">
-    </div>
-    <div>
-        <input type="text" name="location" placeholder="Location">
-    </div>
-    <div>
-        <input type="text" name="theme" placeholder="Theme">
-    </div>
-    <button type="submit">Add avent</button>
-</form>
+</form> 
 
 {% endblock %}
+
