@@ -1,29 +1,35 @@
-<!DOCTYPE html>
-<html land="en">
-    <head>
-        <title>CountDown</title>
-    </head>
-    <body>
-        <form action="/add-event" method="POST">
-            <div>
-                <input type="integer" name="id" placeholder="Enter your ID">
-            </div>
-            <div>
-                <input type="text" name="title" placeholder="Enter title of event">
-            </div>
-            <div>
-                <input type="text" name="message" placeholder="Enter message">
-            </div>
-            <div>
-                <input type="date" name="date" placeholder="Enter date of event, format YYYY-MM-DD">
-            </div>
-            <div>
-                <input type="text" name="location" placeholder="Enter location">
-            </div>
-            <div>
-                <input type="text" name="theme" placeholder="Enter theme">
-            </div>
-            <button type="submit">Add avent</button>
-        </form>
-    </body>
-</html>
+{% extends "layout.html" %}
+
+{% block main %}
+<form action="/add-event" method="POST" class="register">
+    <div>
+        <input type="integer" name="id" placeholder="ID">
+    </div>
+    <div>
+        <input type="text" name="title" placeholder="Title">
+    </div>
+    <div>
+        <input type="text" name="message" placeholder="Message">
+    </div>
+    <label for="id">Enter date of event:</label>
+    <div>
+        <input type="date" name="date">
+    </div>
+    <div>
+        <input type="text" name="location" placeholder="Location">
+    </div>
+    <div>
+        <input type="text" name="theme" placeholder="Theme">
+    </div>
+    <button type="submit">Add avent</button>
+</form>
+
+{% endblock %}
+
+
+<!-- <form>
+    <label for="fname">First Name</label>
+    <input type="text" id="fname" name="fname">
+    <label for="lname">Last Name</label>
+    <input type="text" id="lname" name="lname">
+  </form> -->
