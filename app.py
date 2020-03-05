@@ -4,6 +4,7 @@ from sqlite3 import Error
 from flask.templating import render_template
 from werkzeug.utils import redirect
 from datetime import date
+from werkzeug.security import check_password_hash, generate_password_hash
 
 
 app = Flask(__name__)
@@ -58,7 +59,7 @@ def register():
     # if everything was ok, insert new user in DB
     db = get_db()
     db.execute("INSERT INTO users (username, hash) VALUES (:username, :hash);", {
-               "username": user_name, "hash": password})
+               "username": user_name, "hash": generate_password_hash(password)})
     db.commit()
     return redirect("/")
 
@@ -107,13 +108,27 @@ def history_page():
     today = date.today()
     # today = "1993-11-30"
     cur.execute("SELECT title, message, date, location, link FROM events JOIN themes ON events.theme = themes.theme_id WHERE events.date < :today ORDER BY date", {"today": today})
+    # cur.execute("SELECT * FROM users WHERE username = :username", {"username": "laima"})
     rows = cur.fetchall()
+    # print(rows)
+    # print("LEN of rows:", len(rows))
     return render_template("history.html", rows=rows)
 
 
-@app.route("form/login", methods=["GET"])
-def render_login():
+@app.route("/form/login", methods=["GET"])
+def render_log_in():
     return render_template("login.html")
+
+@app.route("/login", methods=["POST"])
+def login():
+    cur = get_cursor()
+    username = request.form.get("username")
+    password = request.form.get("password")
+    cur.execute("SELECT * FROM users WHERE username = :username", {"username": username})
+    rows =cur.fetchall()
+    if len(rows) != 1 or not check_password_hash(rows[0][2], password):
+        return apology(message = "invalid username and/or password")
+    return redirect("/")
 
 
 # HELPER FUNCTIONS
