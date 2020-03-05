@@ -46,7 +46,7 @@ def register():
     user_name = request.form.get("username")
     # check if username is available
     if checkifavailable(user_name) == False:
-        return apology(message = "Username is not available")
+        return apology(message = "Username is already taken")
 
     password = request.form.get("password")
 
