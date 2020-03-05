@@ -44,8 +44,18 @@ def render_register():
 @app.route("/register", methods=["POST"])
 def register():
     user_name = request.form.get("username")
+    # check if username is available
+    if checkifavailable(user_name) == False:
+        return apology(message = "Username is not available")
+
     password = request.form.get("password")
-    password = request.form.get("confirmation")
+
+    confirmation = request.form.get("confirmation")
+    # check if passwords match
+    if confirmation != password:
+            return apology(message = "Passwords don't match")
+
+    # if everything was ok, insert new user in DB
     db = get_db()
     db.execute("INSERT INTO users (username, hash) VALUES (:username, :hash);", {
                "username": user_name, "hash": password})
@@ -101,3 +111,15 @@ def history_page():
     rows = cur.fetchall()
     return render_template("history.html", rows=rows)
 
+
+
+# HELPER FUNCTIONS
+def apology(message):
+    return render_template("apology.html", message=message)
+
+def checkifavailable(username):
+    cur = get_cursor()
+    cur.execute("SELECT username FROM users WHERE username = :username;", {"username":username})
+    unavailable = cur.fetchall()
+    if unavailable != []:
+        return False
