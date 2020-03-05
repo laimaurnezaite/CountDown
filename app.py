@@ -55,7 +55,7 @@ def add_event():
     db = get_db()
     cur = get_cursor()
     db.execute("INSERT INTO events (person_id, title, message, date, location, theme) VALUES (:person_id, :title, :message, :date, :location, :theme);", {
-               "person_id": person_id, "title": title, "message": message, "date": event_date, "location": location, "theme": theme})
+               "person_id": person_id, "title": title.upper(), "message": message, "date": event_date, "location": location.upper(), "theme": theme})
     link = cur.fetchone()
     db.commit()
 
@@ -67,7 +67,7 @@ def home_page():
     db = get_db()
     cur = get_cursor()
     today = date.today()
-    cur.execute("SELECT title, message, date, location, link FROM events JOIN themes ON events.theme = themes.theme_id WHERE events.date > :today;", {"today": today})
+    cur.execute("SELECT title, message, date, location, link FROM events JOIN themes ON events.theme = themes.theme_id WHERE events.date > :today ORDER BY date", {"today": today})
     rows = cur.fetchall()
     return render_template("home_page.html", rows=rows)
 
