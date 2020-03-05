@@ -1,52 +1,47 @@
-<!DOCTYPE html>
-<html land="en">
-    <head>
-        <title>CountDown</title>
-    </head>
-    <body>
-        <p>
-            {% for row in rows %}
-                <hr>
-                <p id="date">{{row[4]}}</p>
-                <p id="demo-{{loop.index}}"></p>
-                <script>
-                    (function () {
-                        // Set the date we're counting down to
-                        const countDownDate = new Date("{{row[4]}} 00:00:00").getTime();
+{% extends "layout.html" %}
 
-                        // Update the count down every 1 second
-                        const x = setInterval(function () {
-                            // Get today's date and time
-                            const now = new Date().getTime();
+{% block main %}
+<p>
+    {% if rows %}
+        {% for row in rows %}
+        <hr>
+        <p id="date">{{row[4]}}</p>
+        <p id="demo-{{loop.index}}"></p>
+        <script>
+            (function () {
+                // Set the date we're counting down to
+                const countDownDate = new Date("{{row[4]}} 00:00:00").getTime();
 
-                            // Find the distance between now and the count down date
-                            const distance = countDownDate - now;
+                // Update the count down every 1 second
+                const x = setInterval(function () {
+                    // Get today's date and time
+                    const now = new Date().getTime();
 
-                            // Time calculations for days, hours, minutes and seconds
-                            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                    // Find the distance between now and the count down date
+                    const distance = countDownDate - now;
 
-                            // Output the result in an element with id="demo"
-                            document.getElementById("demo-{{loop.index}}").innerHTML = days + "d " + hours + "h "
-                                + minutes + "m " + seconds + "s ";
+                    // Time calculations for days, hours, minutes and seconds
+                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                            // If the count down is over, write some text 
-                            if (distance < 0) {
-                                clearInterval(x);
-                                document.getElementById("demo-{{loop.index}}").innerHTML = "EXPIRED";
-                            }
-                        }, 1000);
-                    })();
-                </script>
-            {% endfor %}
-            
-            <!-- {% for row in rows %}
-                <p>{{row}}</p>
-            {% endfor %} -->
-            
-        </p>
-        <p id="demo"></p>
-    </body>
-</html>
+                    // Output the result in an element with id="demo"
+                    document.getElementById("demo-{{loop.index}}").innerHTML = days + "d " + hours + "h "
+                        + minutes + "m " + seconds + "s ";
+
+                    // If the count down is over, write some text 
+                    if (distance < 0) {
+                        clearInterval(x);
+                        document.getElementById("demo-{{loop.index}}").innerHTML = "EXPIRED";
+                    }
+                }, 1000);
+            })();
+        </script>
+        {% endfor %}
+    {% else %}
+        <div>Welcome to CountDown! We are here to help you count time till your happy event. We all know how exciting it is to cross out days from calendar and see how many days left till your dream day (weddings) or your dream holidays ("Hello, bahama mama") </div>
+    {% endif %}
+</p>
+<p id="demo"></p>
+{% endblock %}

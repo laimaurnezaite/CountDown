@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block main %}
-<form action="/add-event" method="POST" class="register">
+<form action="/add-event" method="POST">
     <div class="d-flex justify-content-center">
         <div class="d-flex flex-column bd-highlight mb-3">
             <input class="p-2 bd-highlight" type="integer" name="id" placeholder="ID">
@@ -9,16 +9,16 @@
             <input class="p-2 bd-highlight" type="text" name="message" placeholder="Message">
             <input class="p-2 bd-highlight" type="date" name="date">
             <input class="p-2 bd-highlight" type="text" name="location" placeholder="Location">
-            <select id="theme">
-                <option value="birthday">Birthday</option>
-                <option value="concert">Concert</option>
-                <option value="exam">Exam</option>
-                <option value="flight">Flight</option>
-                <option value="meeting">Meeting</option>
-                <option value="party">Party</option>
-                <option value="theatre">Theatre</option>
-                <option value="vacation">Vacation</option>
-                <option value="wedding">Wedding</option>
+            <select id="theme" name="theme">
+                <option value="1">Birthday</option>
+                <option value="2">Concert</option>
+                <option value="3">Exam</option>
+                <option value="4">Flight</option>
+                <option value="5">Meeting</option>
+                <option value="6">Party</option>
+                <option value="7">Theatre</option>
+                <option value="8">Vacation</option>
+                <option value="9">Wedding</option>
             </select>
             <button type="submit" class="text-center p-2 bd-highlight">Add avent</button>
         </div>
