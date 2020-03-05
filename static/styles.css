@@ -4,15 +4,17 @@ h1
     letter-spacing: 20px;
     color: #212529;
     padding-top: 30px;
+    font-family: Monospace;  
 }
 h4
 {
     text-align: center;
     color: #212529;
     padding-bottom: 20px;
+    font-family: Monospace;  
 }
 
-input[type=text], [type=integer], [type=date], [list="themes"]
+input[type=text], [type=integer], [type=date]
 {
     border: none;
     border: 1px solid #212529;
@@ -67,6 +69,11 @@ select
     width: 96%;
     color:#212529;
 }
-.select-selected {
-    background-color: BLACK;
-  }
+p
+{
+    margin-top: 5%;
+    font-size: 30px;
+    color:#212529;
+    font-family: Monospace;   
+
+}
