@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<form action="/register" method="POST">
+    <div class="d-flex justify-content-center">
+        <div class="d-flex flex-column bd-highlight mb-3">
+            <input class="p-2 bd-highlight" type="text" name="username" placeholder="Username">
+            <input class="p-2 bd-highlight" type="password" name="password" placeholder="Password">
+            <input class="p-2 bd-highlight" type="password" name="confirmation" placeholder="Confirm password">
+            
+            <button type="submit" class="text-center p-2 bd-highlight">Complete registration</button>
+        </div>
+    </div>
+</form> 
+
+
+{% endblock %}

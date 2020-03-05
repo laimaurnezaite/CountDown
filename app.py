@@ -17,6 +17,7 @@ def create_database(db_file):
         db = conn.cursor()
         db.execute("CREATE TABLE IF NOT EXISTS events (person_id INTEGER NOT NULL, event_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, title TEXT NOT NULL, message TEXT, date TEXT NOT NULL, location TEXT, theme TEXT NOT NULL);")
         db.execute("CREATE TABLE IF NOT EXISTS themes (theme_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, name TEXT NOT NULL, link TEXT NOT NULL);")
+        db.execute("CREATE TABLE IF NOT EXISTS 'users' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'username' TEXT NOT NULL, 'hash' TEXT NOT NULL);")
     except Error as e:
         print(e)
     finally:
@@ -36,6 +37,22 @@ def get_cursor():
     cur = db.cursor()
     return cur
 
+@app.route("/form/register", methods=["GET"])
+def render_register():
+    return render_template("register.html")
+
+@app.route("/register", methods=["POST"])
+def register():
+    user_name = request.form.get("username")
+    password = request.form.get("password")
+    password = request.form.get("confirmation")
+    db = get_db()
+    db.execute("INSERT INTO users (username, hash) VALUES (:username, :hash);", {
+               "username": user_name, "hash": password})
+    db.commit()
+    return redirect("/")
+
+
 @app.route("/form/add-event", methods=["GET"])
 def render_add_event():
     cur = get_cursor()
@@ -54,10 +71,8 @@ def add_event():
     location = request.form.get("location")
     theme = request.form.get("theme")
     db = get_db()
-    cur = get_cursor()
     db.execute("INSERT INTO events (person_id, title, message, date, location, theme) VALUES (:person_id, :title, :message, :date, :location, :theme);", {
                "person_id": person_id, "title": title.upper(), "message": message, "date": event_date, "location": location.upper(), "theme": theme})
-    link = cur.fetchone()
     db.commit()
 
     return redirect("/")
@@ -85,3 +100,4 @@ def history_page():
     cur.execute("SELECT title, message, date, location, link FROM events JOIN themes ON events.theme = themes.theme_id WHERE events.date < :today ORDER BY date", {"today": today})
     rows = cur.fetchall()
     return render_template("history.html", rows=rows)
+

@@ -14,7 +14,7 @@ h4
     font-family: Monospace;  
 }
 
-input[type=text], [type=integer], [type=date]
+input[type=text], [type=integer], [type=date], [type="password"]
 {
     border: none;
     border: 1px solid #212529;
