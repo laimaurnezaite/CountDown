@@ -17,7 +17,6 @@ def create_database(db_file):
         db = conn.cursor()
         db.execute("CREATE TABLE IF NOT EXISTS events (person_id INTEGER NOT NULL, event_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, title TEXT NOT NULL, message TEXT, date TEXT NOT NULL, location TEXT, theme TEXT NOT NULL);")
         db.execute("CREATE TABLE IF NOT EXISTS themes (theme_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, name TEXT NOT NULL, link TEXT NOT NULL);")
-        # print(sqlite3.version)
     except Error as e:
         print(e)
     finally:
@@ -39,14 +38,6 @@ def get_cursor():
     cur = db.cursor()
     return cur
 
-# to print results from database
-# cur.execute("SELECT * FROM events;")
-# rows = cur.fetchall()
-
-# for row in rows:
-#     print(row)
-
-
 @app.route("/form/add-event", methods=["GET"])
 def render_add_event():
     return render_template("add_event.html")
@@ -62,14 +53,13 @@ def add_event():
     location = request.form.get("location")
     theme = request.form.get("theme")
     db = get_db()
+    cur = get_cursor()
     db.execute("INSERT INTO events (person_id, title, message, date, location, theme) VALUES (:person_id, :title, :message, :date, :location, :theme);", {
                "person_id": person_id, "title": title, "message": message, "date": event_date, "location": location, "theme": theme})
+    link = cur.fetchone()
     db.commit()
-    return redirect("/")
 
-# @app.route("/", methods=["GET"])
-# def render_home_page():
-#     return render_template("home_page.html")
+    return redirect("/")
 
 
 @app.route("/", methods=["GET"])
@@ -77,7 +67,7 @@ def home_page():
     db = get_db()
     cur = get_cursor()
     today = date.today()
-    cur.execute("SELECT * FROM events where date > :today;", {"today": today})
+    cur.execute("SELECT title, message, date, location, link FROM events JOIN themes ON events.theme = themes.theme_id WHERE events.date > :today;", {"today": today})
     rows = cur.fetchall()
     return render_template("home_page.html", rows=rows)
 
