@@ -23,9 +23,7 @@ def create_database(db_file):
         if conn:
             conn.close()
 
-
 create_database("countdown.db")
-
 
 def get_db():
     db = sqlite3.connect("countdown.db")
@@ -40,7 +38,10 @@ def get_cursor():
 
 @app.route("/form/add-event", methods=["GET"])
 def render_add_event():
-    return render_template("add_event.html")
+    cur = get_cursor()
+    cur.execute("SELECT theme_id, name FROM themes;")
+    themes_DB = cur.fetchall()
+    return render_template("add_event.html", themes=themes_DB)
 
 
 @app.route("/add-event", methods=["POST"])
@@ -78,7 +79,6 @@ def layout_page():
 
 @app.route("/history")
 def history_page():
-    db = get_db()
     cur = get_cursor()
     today = date.today()
     # today = "1993-11-30"
