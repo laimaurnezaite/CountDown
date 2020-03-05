@@ -84,7 +84,6 @@ def add_event():
     db.execute("INSERT INTO events (person_id, title, message, date, location, theme) VALUES (:person_id, :title, :message, :date, :location, :theme);", {
                "person_id": person_id, "title": title.upper(), "message": message, "date": event_date, "location": location.upper(), "theme": theme})
     db.commit()
-
     return redirect("/")
 
 
@@ -111,6 +110,10 @@ def history_page():
     rows = cur.fetchall()
     return render_template("history.html", rows=rows)
 
+
+@app.route("form/login", methods=["GET"])
+def render_login():
+    return render_template("login.html")
 
 
 # HELPER FUNCTIONS
