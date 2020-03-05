@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block main %}
+<p>
+    {% if rows %}
+        {% for row in rows %}
+            <p id="date">
+                <div class="center" style='background-image: url("{{row[4]}}")'>
+                    <div class="transbox">
+                        <p class="first">Your {{row[0]}} already happened</p>
+                        <p>When: {{row[2]}}</p>  
+                        <p>Where: {{row[3]}}</p>
+                        <p>Message: {{row[1]}}</p>
+                    </div>
+                </div>
+        {% endfor %}
+    {% else %}
+        <p id="hometext" class="text-center">
+            Welcome to CountDown!<br> You do not have past events.<br> Add events, count time and come here to remember all the activities you had.
+        </p>
+    {% endif %}
+</p>
+<p id="demo"></p>
+{% endblock %}

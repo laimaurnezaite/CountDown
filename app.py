@@ -67,6 +67,7 @@ def home_page():
     db = get_db()
     cur = get_cursor()
     today = date.today()
+    # today = "2030-11-30"
     cur.execute("SELECT title, message, date, location, link FROM events JOIN themes ON events.theme = themes.theme_id WHERE events.date > :today ORDER BY date", {"today": today})
     rows = cur.fetchall()
     return render_template("home_page.html", rows=rows)
@@ -74,3 +75,13 @@ def home_page():
 @app.route("/layout")
 def layout_page():
     return render_template("layout.html")
+
+@app.route("/history")
+def history_page():
+    db = get_db()
+    cur = get_cursor()
+    today = date.today()
+    # today = "1993-11-30"
+    cur.execute("SELECT title, message, date, location, link FROM events JOIN themes ON events.theme = themes.theme_id WHERE events.date < :today ORDER BY date", {"today": today})
+    rows = cur.fetchall()
+    return render_template("history.html", rows=rows)
