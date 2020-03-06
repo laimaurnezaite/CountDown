@@ -11,18 +11,27 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     </head>
     <body>
-        <h1>My CountDown</h1>
-        <h4>Count till your happy time!</h4>
+        {% if session.user_id %}
+            <h1>My CountDown</h1>
+            <h4>Count till your happy time!</h4>
             <div class="d-flex justify-content-center">
                 <button type="button" id="menu" class="p-2 bd-highlight" onclick='window.location.href = "/";'>Homepage</button>
                 <button type="button" id="menu" class="p-2 bd-highlight" onclick='window.location.href = "/form/add-event";'>Add Event</button>
                 <button type="button" id="menu" class="p-2 bd-highlight" onclick='window.location.href = "/history";'>History of Events</button>
                 <button type="button" id="menu" class="p-2 bd-highlight" onclick='window.location.href = "/logout";'>Log out</button>   
             </div>
-
-        
+        {% else %}
+            <h1>My CountDown</h1>
+            <h4>Count till your happy time!</h4>
+            <div class="d-flex justify-content-center">
+                <button type="button" id="menu" class="p-2 bd-highlight" onclick='window.location.href = "/";'>Homepage</button>
+                <button type="button" id="menu" class="p-2 bd-highlight" onclick='window.location.href = "/form/add-event";'>Add Event</button>
+                <button type="button" id="menu" class="p-2 bd-highlight" onclick='window.location.href = "/history";'>History of Events</button>
+                <button type="button" id="menu" class="p-2 bd-highlight" onclick='window.location.href = "/form/register";'>Register</button>   
+            </div>
+        {% endif %}
         <main>
-            {% block main %}{% endblock %}
+        {% block main %}{% endblock %}
         </main>
     </body>
 </html>
