@@ -1,5 +1,5 @@
-from flask import Flask, escape, request, session
 import sqlite3
+from flask import Flask, escape, request, session
 from sqlite3 import Error
 from flask.templating import render_template
 from werkzeug.utils import redirect
@@ -8,8 +8,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from flask_session import Session
 from tempfile import mkdtemp
-from functools import wraps
 
+from helpers import login_required, apology, check_if_available, get_db, get_cursor
 
 app = Flask(__name__)
 
@@ -28,19 +28,6 @@ app.config["SESSION_TYPE"] = "filesystem"
 
 Session(app)
 
-def login_required(f):
-    """
-    Decorate routes to require login.
-
-    http://flask.pocoo.org/docs/1.0/patterns/viewdecorators/
-    """
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if session.get("user_id") is None:
-            return redirect("/form/login")
-        return f(*args, **kwargs)
-    return decorated_function
-
 def create_database(db_file):
     # create a database connection to a SQLite database
     conn = None
@@ -58,26 +45,15 @@ def create_database(db_file):
 
 create_database("countdown.db")
 
-def get_db():
-    db = sqlite3.connect("countdown.db")
-    cur = db.cursor()
-    return db
-
-
-def get_cursor():
-    db = sqlite3.connect("countdown.db")
-    cur = db.cursor()
-    return cur
-
 @app.route("/form/register", methods=["GET"])
 def render_register():
     return render_template("register.html")
 
 @app.route("/register", methods=["POST"])
 def register():
-    user_name = request.form.get("username")
+    username = request.form.get("username")
     # check if username is available
-    if check_if_available(user_name) == False:
+    if check_if_available(username) == False:
         return apology(message = "Username is already taken")
 
     password = request.form.get("password")
@@ -90,7 +66,7 @@ def register():
     # if everything was ok, insert new user in DB
     db = get_db()
     db.execute("INSERT INTO users (username, hash) VALUES (:username, :hash);", {
-               "username": user_name, "hash": generate_password_hash(password)})
+               "username": username, "hash": generate_password_hash(password)})
     db.commit()
     return redirect("/")
 
@@ -100,8 +76,8 @@ def register():
 def render_add_event():
     cur = get_cursor()
     cur.execute("SELECT theme_id, name FROM themes;")
-    themes_DB = cur.fetchall()
-    return render_template("add_event.html", themes=themes_DB)
+    themes = cur.fetchall()
+    return render_template("add_event.html", themes=themes)
 
 
 @app.route("/add-event", methods=["POST"])
@@ -114,26 +90,23 @@ def add_event():
     event_date = request.form.get("date")
     location = request.form.get("location")
     theme = request.form.get("theme")
-    print(theme)
     db = get_db()
     db.execute("INSERT INTO events (person_id, title, message, date, location, theme) VALUES (:person_id, :title, :message, :date, :location, :theme);", {
                "person_id": person_id, "title": title.upper(), "message": message, "date": event_date, "location": location.upper(), "theme": theme})
-
     db.commit()
     return redirect("/")
 
 
 @app.route("/", methods=["GET"])
 @login_required
-def home_page():
+def homepage():
     person_id = session["user_id"]
     db = get_db()
     cur = get_cursor()
     today = date.today()
     cur.execute("SELECT title, message, date, location, link FROM events JOIN themes ON events.theme = themes.theme_id WHERE events.date > :today AND events.person_id = :person_id ORDER BY date", {"today": today, "person_id":person_id})
-
     rows = cur.fetchall()
-    return render_template("home_page.html", rows=rows)
+    return render_template("homepage.html", rows=rows)
 
 @app.route("/layout")
 def layout_page():
@@ -170,22 +143,9 @@ def login():
 
     # Remember which user has logged in
     session["user_id"] = rows[0][0]
-
     return redirect("/")
 
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect("/")
-
-# HELPER FUNCTIONS
-def apology(message):
-    return render_template("apology.html", message=message)
-
-def check_if_available(username):
-    cur = get_cursor()
-    cur.execute("SELECT username FROM users WHERE username = :username;", {"username":username})
-    unavailable = cur.fetchall()
-    if unavailable != []:
-        return False
-
