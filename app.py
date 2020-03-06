@@ -108,7 +108,6 @@ def render_add_event():
 @login_required
 def add_event():
     # add new event that you want to count
-    # person_id = request.form.get("id")
     person_id = session["user_id"]
     title = request.form.get("title")
     message = request.form.get("message")
@@ -131,9 +130,7 @@ def home_page():
     db = get_db()
     cur = get_cursor()
     today = date.today()
-    # today = "2030-11-30"
     cur.execute("SELECT title, message, date, location, link FROM events JOIN themes ON events.theme = themes.theme_id WHERE events.date > :today AND events.person_id = :person_id ORDER BY date", {"today": today, "person_id":person_id})
-    # cur.execute("SELECT title, message, date, location FROM events WHERE person_id = :person_id ORDER BY date", {"today": today, "person_id":person_id})
 
     rows = cur.fetchall()
     return render_template("home_page.html", rows=rows)
