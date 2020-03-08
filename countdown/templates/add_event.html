@@ -4,11 +4,10 @@
 <form action="/add-event" method="POST">
     <div class="d-flex justify-content-center">
         <div class="d-flex flex-column bd-highlight mb-3">
-            <!-- <input class="p-2 bd-highlight" type="integer" name="id" placeholder="ID"> -->
-            <input class="p-2 bd-highlight" type="text" name="title" placeholder="Title" required>
-            <input class="p-2 bd-highlight" type="text" name="message" placeholder="Message">
-            <input class="p-2 bd-highlight" type="date" name="date" required>
-            <input class="p-2 bd-highlight" type="text" name="location" placeholder="Location" required>
+            <input class="p-2 bd-highlight" type="text" name="title" placeholder="Title" autocomplete="off" required>
+            <input class="p-2 bd-highlight" type="text" name="message" placeholder="Message" autocomplete="off">
+            <input class="p-2 bd-highlight" type="date" name="date" autocomplete="off" required>
+            <input class="p-2 bd-highlight" type="text" name="location" placeholder="Location" autocomplete="off" required>
             <select id="theme" name="theme" required>
                 {% for theme_id, name in themes %}
                 <option value="{{theme_id}}">{{name}}</option>
