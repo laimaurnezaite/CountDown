@@ -81,7 +81,7 @@ def history_page():
     cur = get_cursor()
     today = date.today()
     # today = "1993-11-30"
-    cur.execute("SELECT title, message, date, location, link FROM events JOIN themes ON events.theme = themes.theme_id WHERE events.date < :today ORDER BY date", {"today": today, "person_id":person_id})
+    cur.execute("SELECT title, message, date, location, link FROM events JOIN themes ON events.theme = themes.theme_id WHERE events.date < :today AND person_id = :person_id ORDER BY date", {"today": today, "person_id":person_id})
     rows = cur.fetchall()
     return render_template("history.html", rows=rows)
 
